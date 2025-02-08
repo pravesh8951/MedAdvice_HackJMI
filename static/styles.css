@@ -17,7 +17,7 @@ body {
 
 .container {
     width: 100%;
-    max-width: 600px;
+    max-width: 800px; /* Increased from 600px to 800px */
     background: rgba(30, 41, 59, 0.8);
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -95,9 +95,16 @@ body {
     background: rgba(35, 42, 44, 0.6);
     border-radius: 8px;
     padding: 15px;
-    max-height: 200px;
-    overflow-y: auto;
+    min-height: 150px; /* Added to ensure consistent height */
     color: #e0e0e0;
+    word-wrap: break-word; /* Ensures long text breaks */
+    overflow-wrap: break-word; /* Alternate for word-wrap */
+    white-space: pre-wrap; /* Preserves formatting */
+}
+
+#extracted-text, #chatbot-response {
+    overflow: visible; /* Removed scrolling */
+    max-height: none; /* Removed max-height restriction */
 }
 
 #upload-form button {

@@ -15,18 +15,32 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 # Ensure the upload folder exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Set Tesseract path (Change this if needed)
+# Set Tesseract path
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
 def index():
+    return render_template("index.html")
+
+@app.route("/medical_advice")
+def medical_advice():
+    return render_template("medical_advice.html")
+@app.route("/login")
+def login():
+    return render_template("login.html")
+@app.route("/inperson")
+def inperson():
+    return render_template("inperson.html")
+
+@app.route("/upload", methods=["POST"])
+def upload_file():
     if request.method == "POST":
         file = request.files["file"]
         if file:
             filepath = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
             file.save(filepath)
 
-            # 🛑 **Fix: Perform OCR Extraction**
+            # Perform OCR Extraction
             image = Image.open(filepath)
             extracted_text = pytesseract.image_to_string(image)
 
@@ -36,8 +50,8 @@ def index():
             response = process_text(extracted_text)
 
             return jsonify({"text": extracted_text, "response": response})
-
-    return render_template("index.html")
+    
+    return jsonify({"error": "No file uploaded"}), 400
 
 if __name__ == "__main__":
     app.run(debug=True)
